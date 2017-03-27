@@ -1,31 +1,64 @@
 import debug from 'debug';
-import { exec } from 'child-process-promise';
+var CryptoJS = require("crypto-js");
+import axios from 'axios';
 
 export default class lineBot {
 
+  constructor ({ apiUrl, channelAccessToken, timeout  }) {
+    this.lineApi = axios.create({
+      baseURL: apiUrl,
+      timeout: timeout,
+      headers: {
+        "Content-Type": 'application/json',
+        'Authorization': `Bearer ${channelAccessToken}`
+      }
+    });
+  }
 
-  async call({ content, charset, showSymbol, showAttribute }) {
+
+  async reply({ events }) {
     try {
-      charset = charset ? `-c ${charset}` : '-c utf8';
-      showSymbol = showSymbol ? '' : '-I';
-      showAttribute = showAttribute ? '-A' : '';
-
-      const xdbsPath = await this.loadXDBDict();
-
-      const cmd = `/usr/local/scws/bin/scws -i "${content}" -d ${xdbsPath}\
-        ${charset} ${showSymbol} ${showAttribute}`;
-      debug('dev')(cmd);
-      const result = await exec(cmd)
-      .then((cmdResult) => cmdResult)
-      .catch((e) => { throw e; });
-      const wordArray = result.stdout.split(' ');
-      wordArray.pop();
-
-      return {
-        stdout: result.stdout,
-        wordArray,
-        ...this.getInfo(result.stderr),
-      };
+      for(let event of events) {
+        const userMsg =  event.message.text;
+        let result =  await this.lineApi.post('/message/reply', {
+          replyToken: event.replyToken,
+          messages: [{
+            "type":"text",
+            "text": `get message "${userMsg}"`,
+          }, {
+            "type": "image",
+            "originalContentUrl": "https://unsplash.it/300/300/?random",
+            "previewImageUrl": "https://unsplash.it/300/300/?random"
+          }, {
+            "type": "template",
+            "altText": "this is a buttons template",
+            "template": {
+                "type": "buttons",
+                "thumbnailImageUrl": "https://unsplash.it/300/300/?random",
+                "title": "Menu",
+                "text": "Please select",
+                "actions": [
+                    {
+                      "type": "postback",
+                      "label": "Buy",
+                      "data": "action=buy&itemid=123"
+                    },
+                    {
+                      "type": "postback",
+                      "label": "Add to cart",
+                      "data": "action=add&itemid=123"
+                    },
+                    {
+                      "type": "uri",
+                      "label": "View detail",
+                      "uri": "http://example.com/page/123"
+                    }
+                ]
+            }
+          }]
+        });
+        console.log(result);
+      }
     } catch (e) {
       throw e;
     }
