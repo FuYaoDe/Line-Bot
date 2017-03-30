@@ -28,12 +28,12 @@ export default class Routes {
 
     publicRoute.post('/api/line', async (ctx) => {
       try {
-	      const { body } = ctx.request;
-	      console.log(JSON.stringify(body, null, 2));
+        const { body } = ctx.request;
+        console.log(JSON.stringify(body, null, 2));
 
-	      await services.lineBot.reply({
-	        events: body.events,
-	      });
+        await services.lineBot.reply({
+          events: body.events,
+        });
 
 
         ctx.body = {
