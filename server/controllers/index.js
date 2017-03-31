@@ -1,7 +1,6 @@
 import Router from 'koa-router';
 import { exec } from 'child-process-promise';
 import debug from 'debug';
-var CryptoJS = require("crypto-js");
 import config from '../config/init';
 import axios from 'axios';
 
@@ -29,13 +28,8 @@ export default class Routes {
     publicRoute.post('/api/line', async (ctx) => {
       try {
         const { body } = ctx.request;
-        console.log(JSON.stringify(body, null, 2));
-
-        await services.lineBot.reply({
-          events: body.events,
-        });
-
-
+        debug('dev')(JSON.stringify(body, null, 2));
+        await services.akinatorScript.getMessage(body.events);
         ctx.body = {
           meaasge: 'reply finish',
           data: {},
