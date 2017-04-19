@@ -25,6 +25,17 @@ export default class Routes {
     const app = this.app;
     const publicRoute = new Router();
 
+    publicRoute.get('/', async (ctx) => {
+      try {
+        ctx.body = {
+          meaasge: 'Hello Line bot!!',
+          data: {},
+        };
+      } catch (e) {
+        throw e;
+      }
+    });
+
     publicRoute.post('/api/line', async (ctx) => {
       try {
         const { body } = ctx.request;
