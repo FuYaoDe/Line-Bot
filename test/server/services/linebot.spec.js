@@ -2,11 +2,12 @@ import LineBotService from '../../../server/services/lineBot';
 import debug from 'debug';
 describe('about line service', () => {
   let lineBot;
+  const replyToken = '79134c92e9e34927b11495987b9b827f';
   before(async(done) => {
     try {
       lineBot = new LineBotService({
         apiUrl: 'https://api.line.me/v2/bot/',
-        channelAccessToken: config.channelAccessToken
+        channelAccessToken: appConfig.channelAccessToken
       });
       done();
     } catch (e) {
@@ -16,23 +17,23 @@ describe('about line service', () => {
 
   it('send event', async(done) => {
     try {
-      await request.post('').send({
+      await request.post('/api/line').send({
         events: [
           {
-            replyToken: 'nHuyWiB7yP5Zw52FIkcQobQuGDXCTA',
             type: 'message',
-            timestamp: 1462629479859,
+            replyToken,
             source: {
+              userId: 'U912faa27852eac5fec1335626d5bc17f',
               type: 'user',
-              userId: 'U206d25c2ea6bd87c17655609a1c37cb8',
             },
+            timestamp: 1492798393026,
             message: {
-              id: '325708',
               type: 'text',
-              text: 'Hello, world',
+              id: '5972882263864',
+              text: 'hellow',
             },
           },
-        ],
+        ]
       });
       done();
     } catch (e) {
@@ -44,10 +45,10 @@ describe('about line service', () => {
     try {
       const result = await lineBot.reply({
         replyToken,
-        messages: {
+        messages: [{
           type: 'text',
           text: 'Hello, world',
-        },
+        }],
       });
       debug('dev')(JSON.stringify(result, null, 2));
       done();
