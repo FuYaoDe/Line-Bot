@@ -41,7 +41,7 @@ describe('about line service', () => {
     }
   })
 
-  it('send reply', async(done) => {
+  it.skip('send reply', async(done) => {
     try {
       const result = await lineBot.reply({
         replyToken,

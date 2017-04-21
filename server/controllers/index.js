@@ -32,13 +32,13 @@ export default class Routes {
         const { body } = ctx.request;
         debug('dev')(JSON.stringify(body, null, 2));
         const replyToken = body.events[0].replyToken;
-        await services.lineBot.reply({
-          replyToken,
-          messages: [{
-            "type":"text",
-            "text":"Hello, user"
-          }],
-        })
+        // await services.lineBot.reply({
+        //   replyToken,
+        //   messages: [{
+        //     "type":"text",
+        //     "text":"Hello, user"
+        //   }],
+        // })
         ctx.body = {
           meaasge: 'reply finish',
           data: {},
