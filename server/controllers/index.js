@@ -34,10 +34,10 @@ export default class Routes {
         const replyToken = body.events[0].replyToken;
         await services.lineBot.reply({
           replyToken,
-          messages: {
+          messages: [{
             "type":"text",
             "text":"Hello, user"
-          },
+          }],
         })
         ctx.body = {
           meaasge: 'reply finish',
