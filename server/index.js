@@ -68,11 +68,11 @@ controllers.setupAppRoute();
 const liftApp = async () => {
   try {
     console.log(config);
-    app.listen(config.port);
+    app.listen(config.port || 3000);
     await bootstrap();
 
     if (process.send) process.send('online');
-    debug('koa')(`Application started on port ${config.port}`);
+    debug('koa')(`Application started on port ${config.port || 3000}`);
   } catch (e) {
     console.log(e.stack);
   }

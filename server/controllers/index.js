@@ -4,15 +4,6 @@ import debug from 'debug';
 import config from '../config/init';
 import axios from 'axios';
 
-const lineApi = axios.create({
-  baseURL: 'https://api.line.me/v2/bot/',
-  timeout: 3000,
-  headers: {
-    "Content-Type": 'application/json',
-    'Authorization': `Bearer ${config.channelAccessToken}`
-  }
-});
-
 export default class Routes {
 
   constructor(app) {
@@ -40,7 +31,6 @@ export default class Routes {
       try {
         const { body } = ctx.request;
         debug('dev')(JSON.stringify(body, null, 2));
-        await services.akinatorScript.getMessage(body.events);
         ctx.body = {
           meaasge: 'reply finish',
           data: {},

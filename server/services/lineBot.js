@@ -16,6 +16,7 @@ export default class lineBot {
 
   async reply({ replyToken, messages }) {
     try {
+      debug('dev')(replyToken, messages)
       const result =  await this.lineApi.post('/message/reply', {
         replyToken,
         messages,
